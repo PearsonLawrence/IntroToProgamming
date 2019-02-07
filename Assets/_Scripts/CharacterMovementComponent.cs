@@ -14,7 +14,9 @@ public class CharacterMovementComponent : MonoBehaviour
     private bool IsSprinting;
     //Current RB on main object
     private Rigidbody RB;
-    
+
+    public GunComponent Gun;
+
     //Player Input
     Vector3 InputVector;
     // Use this for initialization
@@ -84,6 +86,11 @@ public class CharacterMovementComponent : MonoBehaviour
         InputVector.z = Input.GetAxisRaw("Vertical");
 
         IsSprinting = Input.GetKey(KeyCode.LeftShift);
+
+        if (Input.GetMouseButton(0))
+        {
+            Gun.Fire();
+        }
 
         if (IsSprinting == true)
         {
