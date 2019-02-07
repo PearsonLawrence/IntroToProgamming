@@ -16,6 +16,8 @@ public class CharacterMovementComponent : MonoBehaviour
     private Rigidbody RB;
 
     public GunComponent Gun;
+    public Camera cam;
+
 
     //Player Input
     Vector3 InputVector;
@@ -79,6 +81,29 @@ public class CharacterMovementComponent : MonoBehaviour
         return Result;
     }
     
+    //rotates the player based off of mouse location
+    public void DoMouseLook()
+    {
+        if (cam != null)
+        {
+
+            // stores hit information from a raycast
+            RaycastHit hit;
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            Physics.Raycast(ray, out hit, 10000.0f);
+
+            Vector3 Dir = (hit.point - transform.position).normalized;
+            Dir.y = 0;
+
+            transform.forward = Dir;
+        }
+        else
+        {
+            Debug.Log("Camera is null fam");
+        }
+    }
     
     void InputUpdate()
     {
@@ -106,9 +131,12 @@ public class CharacterMovementComponent : MonoBehaviour
     void Update ()
     {
         InputUpdate();
+    }
 
+    public void FixedUpdate()
+    {
+        DoMouseLook();
 
         Movement(RB, InputVector, Acceleration, CurrentMaxVelocity);
-        
     }
 }
